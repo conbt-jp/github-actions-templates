@@ -29,6 +29,13 @@ jobs:
         working-directory: ${{ inputs.app-directory }}
 
     steps:
+      - name: Reusable Workflow Info
+        run: |
+          echo "================================="
+          echo "RUNNING FROM REUSABLE WORKFLOW"
+          echo "Repository: github-actions-templates"
+          echo "Version: main"
+          echo "================================="
       - name: Checkout source
         uses: actions/checkout@v4
 
