@@ -1,0 +1,60 @@
+name: Build Angular and publish package
+
+on:
+  workflow_call:
+    inputs:
+      app-directory:
+        required: false
+        type: string
+        default: angular-web
+      package-name:
+        required: false
+        type: string
+        default: angular-web
+      node-version:
+        required: false
+        type: string
+        default: "24"
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    defaults:
+      run:
+        working-directory: ${{ inputs.app-directory }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          registry-url: https://npm.pkg.github.com
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular
+        run: npm run build -- --configuration production
+
+      - name: Prepare artifact package
+        run: |
+          mkdir package
+          cp -r dist/* package/
+          cp package.json package/
+          cd package
+          npm pkg set name="@${{ github.repository_owner }}/${{ inputs.package-name }}"
+          npm pkg set version="1.0.${{ github.run_number }}"
+          npm pkg set publishConfig.registry="https://npm.pkg.github.com"
+
+      - name: Publish to GitHub Packages
+        run: npm publish ./package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
