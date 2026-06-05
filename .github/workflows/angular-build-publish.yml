@@ -51,7 +51,7 @@ jobs:
           cp package.json package/
           cd package
           npm pkg set name="@${{ github.repository_owner }}/${{ inputs.package-name }}"
-          npm pkg set version="1.0.${{ github.run_number }}"
+          npm pkg set version="1.0.${{ github.run_id }}"
           npm pkg set publishConfig.registry="https://npm.pkg.github.com"
 
       - name: Publish to GitHub Packages
