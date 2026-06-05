@@ -2,6 +2,20 @@ name: Build Angular and publish package
 
 on:
   workflow_call:
+    inputs:
+      app-directory:
+        required: false
+        type: string
+        default: angular-web
+      package-name:
+        required: false
+        type: string
+        default: angular-web
+      node-version:
+        required: false
+        type: string
+        default: "24"
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
@@ -9,14 +23,12 @@ jobs:
     permissions:
       contents: read
       packages: write
+
+    defaults:
+      run:
+        working-directory: ${{ inputs.app-directory }}
+
     steps:
-      - name: Reusable Workflow Info
-        run: |
-          echo "================================="
-          echo "RUNNING FROM REUSABLE WORKFLOW"
-          echo "Repository: github-actions-templates"
-          echo "Version: main"
-          echo "================================="
       - name: Checkout source
         uses: actions/checkout@v4
 
