@@ -3,10 +3,6 @@ name: Build Angular and publish package
 on:
   workflow_call:
     inputs:
-      app-directory:
-        required: false
-        type: string
-        default: angular-web
       package-name:
         required: false
         type: string
