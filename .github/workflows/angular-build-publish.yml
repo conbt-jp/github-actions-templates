@@ -19,11 +19,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-
-    defaults:
-      run:
-        working-directory: ${{ inputs.app-directory }}
-
     steps:
       - name: Reusable Workflow Info
         run: |
