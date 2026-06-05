@@ -2,16 +2,6 @@ name: Build Angular and publish package
 
 on:
   workflow_call:
-    inputs:
-      package-name:
-        required: false
-        type: string
-        default: angular-web
-      node-version:
-        required: false
-        type: string
-        default: "24"
-
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
